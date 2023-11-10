@@ -8,6 +8,7 @@ import weakref
 THREADS: weakref.WeakSet[threading.Thread] = weakref.WeakSet()
 
 def _OnShutdown(*args):
+    global THREADS
     THREADS = [t for t in THREADS if t.is_alive()]
     if THREADS: return
     st = time.time()

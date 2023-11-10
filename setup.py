@@ -35,6 +35,6 @@ setup(
     name='pytravie',
     packages=find_packages(include=['travie','travie.*']),
     url='https://github.com/tvanderpool/pytravie',
-    version='0.1.2',
+    version='0.1.3',
     zip_safe=True,
 )
