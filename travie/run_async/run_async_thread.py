@@ -1,7 +1,7 @@
 from typing import TypeVar
 from functools import wraps
 import threading
-from . import _OnShutdown
+from ._OnShutdown import _OnShutdown
 
 class RunAsyncThread( threading.Thread ):
     _RunAsync = None
@@ -14,7 +14,7 @@ class RunAsyncThread( threading.Thread ):
         self._stopevent = threading.Event()
         # self._sleepperiod = 1.0
         threading.Thread.__init__( self, *args, **kwargs )
-        _OnShutdown.THREADS( self )
+        _OnShutdown.register_thread( self )
 
     @property
     def StopRequested( self ):
