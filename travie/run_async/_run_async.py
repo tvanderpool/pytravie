@@ -12,7 +12,7 @@ from .run_async_thread import TThread, RunAsyncThread
 #         return func_hl
 #     return async_func
 
-class _RunAsync( Generic[TThread] ):
+class RunAsyncBase( Generic[TThread] ):
     _threads = []
 
     def __init__( self, func, daemon=False ):
@@ -48,13 +48,13 @@ class _RunAsync( Generic[TThread] ):
         return thread
 
 
-class run_async( _RunAsync[RunAsyncThread] ):
+class run_async( RunAsyncBase[RunAsyncThread] ):
 
     def __init__( self, func ):
         super().__init__( func, False )
 
 
-class run_async_daemon( _RunAsync[RunAsyncThread] ):
+class run_async_daemon( RunAsyncBase[RunAsyncThread] ):
 
     def __init__( self, func ):
         super().__init__( func, True )

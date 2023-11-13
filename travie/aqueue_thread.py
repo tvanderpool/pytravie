@@ -77,7 +77,7 @@ class AQueueThread(run_async.RunAsyncThread, typing.Generic[_TQueueItem]):
     def qsize(self)->int:
         return self._queue.qsize()
 
-class AQueueThreadProcessor( run_async._RunAsync[AQueueThread[_TQueueItem]] ):
+class AQueueThreadProcessor( run_async.RunAsyncBase[AQueueThread[_TQueueItem]] ):
     def __init__( self, func:"Callable[[AsyncIterator[_TQueueItem]], Coroutine[Any,Any,None]]" ):
         super().__init__( func, True )
 
