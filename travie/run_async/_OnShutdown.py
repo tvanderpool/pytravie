@@ -4,42 +4,50 @@ import sys
 import threading
 import time
 import weakref
+import typing
+if typing.TYPE_CHECKING:
+    from .run_async_thread import RunAsyncThread
+
+class WeakThreadSet(weakref.WeakSet["RunAsyncThread"]):
+    def __iter__(self):
+        threads_to_remove = weakref.WeakSet()
+        for thread in super().__iter__():
+            if thread.is_alive():
+                yield thread
+            else:
+                threads_to_remove.add(thread)
+        self.difference_update(threads_to_remove)
 
 class _OnShutdown:
-    _THREADS: weakref.WeakSet = []
+    _THREADS: WeakThreadSet
     _registered = False
 
     def __init__( self ):
-        self._THREADS = weakref.WeakSet()
+        self._THREADS = WeakThreadSet()
 
-    def register_thread(self, thread:threading.Thread):
+    def register_thread(self, thread:"RunAsyncThread"):
         self._THREADS.add(thread)
         if not self._registered:
-            atexit.register( _OnShutdown )
+            atexit.register( _OnShutdown ) # this isn't adding the class, because this is a singleton
             self._registered = True
 
-    @property
-    def _ALIVE_THREADS(self):
-        for t in self._THREADS:
-            if not t.is_alive(): self._THREADS.remove(t)
-        return self._THREADS
-
     def __call__( self, *args ):
-        if not self._ALIVE_THREADS: return
+        if not any(self._THREADS): return
         st = time.time()
         sys.stderr.write( 'Shutting Down Threads' )
         sys.stderr.flush()
-        while len( self._ALIVE_THREADS ) and ( time.time() - st < 5 ):
+        while any( self._THREADS ) and ( time.time() - st < 5 ):
             sys.stderr.write( '.' )
             sys.stderr.flush()
             logging.debug( 'run_async shutting down threads: %d', len( self._THREADS ) )
-            for t in [*self._ALIVE_THREADS]:
-                if t.is_alive: t.join( .5, stop=True )
-                if not t.is_alive(): self._THREADS.remove( t )
+            for t in self._THREADS:
+                t.join( .5, stop=True )
 
         sys.stderr.write( '\n' )
         sys.stderr.flush()
-        if self._ALIVE_THREADS:
-            sys.exit( 1 )
+        if any(self._THREADS):
+            sys.stderr.write( 'threads still running\n' )
+            sys.stderr.flush()
+            # exit( 0 )
 
 _OnShutdown = _OnShutdown()

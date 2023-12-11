@@ -43,8 +43,8 @@ class AQueueThread(run_async.RunAsyncThread, typing.Generic[_TQueueItem]):
     _stop_task:"asyncio.Future[None]"
     # _queue_get:asyncio.Task = None
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, **kwargs):
+        super().__init__(daemon=kwargs.pop('daemon', True), **kwargs)
         self._queue = CloseableAsyncQueue()
 
     def join(self, timeout=None):
