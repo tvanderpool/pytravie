@@ -1,4 +1,4 @@
-from .run_async import run_async
+from .run_async import _run_async
 import typing
 import queue
 if typing.TYPE_CHECKING:
@@ -7,8 +7,8 @@ if typing.TYPE_CHECKING:
 _TQueueItem = typing.TypeVar("_TQueueItem")
 __all__ = 'QueueThread', 'QueueThreadProcessor'
 
-class QueueThread(run_async.RunAsyncThread, typing.Generic[_TQueueItem]):
-    def __init__(self, *args, **kwargs):
+class QueueThread(_run_async.RunAsyncThread, typing.Generic[_TQueueItem]):
+    def __init__(self, *args, **kwargs): # type: ignore
         super().__init__(*args, **kwargs)
         self.queue = queue.Queue()
 
@@ -43,7 +43,7 @@ class QueueThread(run_async.RunAsyncThread, typing.Generic[_TQueueItem]):
     def qsize(self)->int:
         return self.queue.qsize()
 
-class QueueThreadProcessor( run_async._RunAsync[QueueThread[_TQueueItem]] ):
+class QueueThreadProcessor( _run_async.RunAsyncBase[QueueThread[_TQueueItem]] ):
     def __init__( self, func:"Callable[[Iterator[_TQueueItem]], None]" ):
         super().__init__( func, True )
     # def __call__(self, *args, **kwargs)->Tuple[]:

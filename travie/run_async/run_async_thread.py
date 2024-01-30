@@ -1,10 +1,13 @@
-from typing import TypeVar
+from typing import Optional, TypeVar, TYPE_CHECKING
 from functools import wraps
 import threading
 from ._OnShutdown import _OnShutdown
+if TYPE_CHECKING:
+    from ._run_async import RunAsyncBase
+
 
 class RunAsyncThread( threading.Thread ):
-    _RunAsync = None
+    _RunAsync:Optional["RunAsyncBase"] = None
 
     @wraps( threading.Thread.__init__ )
     def __init__( self, *args, **kwargs ):

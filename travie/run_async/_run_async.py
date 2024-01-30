@@ -13,7 +13,7 @@ from .run_async_thread import TThread, RunAsyncThread
 #     return async_func
 
 class RunAsyncBase( Generic[TThread] ):
-    _threads = []
+    _threads: weakref.WeakSet
 
     def __init__( self, func, daemon=False ):
         self._func = func
@@ -36,11 +36,11 @@ class RunAsyncBase( Generic[TThread] ):
         if ob:=getattr(cls,'__orig_bases__',None):
             if obargs:=typing.get_args(ob[0]):
                 return obargs[0]
-        return RunAsyncThread
+        return RunAsyncThread # type: ignore
         # return obargs[0] if (ob:=getattr(cls,'__orig_bases__',None)) and (obargs:=typing.get_args(ob[0])) else MyThread
 
     def __call__( self, *args, **kwargs )->TThread:
-        thread = self._ThreadCls( target=self._func, args=args, kwargs=kwargs )
+        thread = self._ThreadCls( target=self._func, args=args, kwargs=kwargs ) # type: ignore
         thread.daemon = self._daemon
         thread._RunAsync = self
         self._threads.add( thread )
