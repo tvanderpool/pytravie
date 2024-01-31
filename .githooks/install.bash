@@ -18,15 +18,16 @@ hooks=(
     "update"
 )
 
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/../.git/hooks"
+GITHOOKS='../../.githooks'
 
 for hook in "${hooks[@]}"; do
-    if ! [ -f ".githooks/$hook" ]; then continue; fi
-    if [ -f ".git/hooks/$hook" ]; then
-        mv ".git/hooks/$hook" ".git/hooks/$hook.bak"
+    if ! [ -f "$GITHOOKS/$hook" ]; then continue; fi
+    if [ -f "$hook" ]; then
+        mv "$hook" "$hook.bak"
     fi
-    ln -sf ".githooks/$hook" ".git/hooks/$hook"
-    # chmod +x ".githooks/$hook"
+    ln -sf "$GITHOOKS/$hook" "$hook"
+    # chmod +x "$GITHOOKS/$hook"
 done
 
 # Check if pre-commit command exists

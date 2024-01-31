@@ -1,5 +1,7 @@
 #!/bin/bash
 ctag=$(git describe --tags | grep '^v')
-git reset --soft HEAD~2
-git commit --reuse-message=$(git log -2 --pretty=%h -n 1 --skip 1 $ctag)
-git tag -f $ctag
+git reset --soft HEAD~1
+git commit --reuse-message=$(git log -1 --pretty=%h -n 1 --skip 1 $ctag)
+if [ ! -z "$ctag" ]; then
+    git tag -f $ctag
+fi
