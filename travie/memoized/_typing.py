@@ -1,5 +1,5 @@
 from typing import TypeVar
 
-Instance = TypeVar( 'Instance' )
-Value = TypeVar( 'Value' )
-Attribute = TypeVar( 'Attribute' )
+_Instance = TypeVar('_Instance')
+_Value = TypeVar('_Value')
+_Attribute = TypeVar('_Attribute')

@@ -1,6 +1,6 @@
 import json
 import os
-from typing import List, Any, Dict, TypeVar
+from typing import List, Dict, TypeVar
 from .extend import ExtendCls
 from pathlib import Path
 import importlib
