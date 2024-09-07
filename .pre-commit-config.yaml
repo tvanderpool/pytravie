@@ -28,3 +28,11 @@ repos:
   #   rev: v0.40.2
   #   hooks:
   #   - id: yapf
+#   - repo: local
+#     hooks:
+#       - id: version-change-check
+#         name: Version Change Check
+#         entry: .pre-commit/version-change-check.bash
+#         language: script
+#         files: ''
+#         always_run: true

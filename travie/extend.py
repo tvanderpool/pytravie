@@ -23,7 +23,7 @@ def add_property( cls, name=None, fget=None, fset=None, fdel=None, doc=None ):
     setattr( cls, name or fget.__name__, property( **filter_nones_from_dict( dict( fget=fget, fset=fset, fdel=fdel, doc=doc ) ) ) )
 
 def ExtendCls( cls:"Type", name=None ):
-    def ExtendCls( func:"Type"|"Callable" ):
+    def ExtendCls( func:"Type|Callable" ):
         match func:
             case type() as klass:
                 for fname, func in klass.__dict__.items():
