@@ -8,7 +8,7 @@ def _GetOp( op, key:"Optional[Callable[[IterItemT],VT]]", item:"Optional[KT]", a
     if argc == 0: return key
     assert argc == 1, 'op, item, attr are exclusive arguments'
     import operator
-    from . import poperator
+    from .. import poperator
     if item is not None:
         op = 'item'
         key = item

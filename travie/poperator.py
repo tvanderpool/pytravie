@@ -1,3 +1,4 @@
+import operator
 # def _pwrap(fn):
 #     pass
 # def log_decorator(log_enabled):
@@ -62,14 +63,12 @@ def chainmap( funcs, *args):
     return map( chain(*funcs), *args )
 
 def itemgetter(*items):
-    from . import __operator__ as operator
     if len(items) == 1:
         return operator.itemgetter(items[0])
     return chain(*map(operator.itemgetter, items))
 chained_itemgetter = itemgetter
 
 def attrgetter(*items):
-    from . import __operator__ as operator
     if len(items) == 1 and '.' in items[0]:
         items = items[0].split('.')
     if len(items) == 1:
@@ -78,7 +77,6 @@ def attrgetter(*items):
 chained_attrgetter = attrgetter
 
 def makeai(L):
-    from . import __operator__ as operator
     ai_dict = {'attr':operator.attrgetter, 'item':operator.itemgetter}
     b_dict = {n:m for n, m in L.items() if n not in ('makeai', 'starmap', 'chain','not_','chained_itemgetter','chained_attrgetter') and not n.startswith('__') and callable(m) }
     def make_chain_wrapper(a_m, b_m):

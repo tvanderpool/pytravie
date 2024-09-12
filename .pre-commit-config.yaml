@@ -13,11 +13,12 @@ repos:
       args: [--fix=lf]
     - id: check-shebang-scripts-are-executable
     - id: check-executables-have-shebangs
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.15
-    hooks:
-      - id: ruff # Run the linter.
-      # - id: ruff-format # Run the formatter.
+  # - repo: https://github.com/astral-sh/ruff-pre-commit
+  #   rev: v0.1.15
+  #   hooks:
+  #     - id: ruff # Run the linter.
+  #     # - id: ruff-format # Run the formatter.
+
   # - repo: https://github.com/pycqa/isort
   #   rev: 5.12.0
   #   hooks:

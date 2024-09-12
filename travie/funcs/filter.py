@@ -9,7 +9,7 @@ def Filter( items, op=None, key=None, val=None, Not=False, item=None, attr=None 
         op = _GetOp( op, key, item, attr )
     # print dict(op=op, key=key, val=val, Not=Not, item=item, attr=attr)
     if op is not None and val is not None:
-        from . import poperator
+        from .. import poperator
         op = poperator.chain( op, poperator.eq( val ) )
     if op is not None and Not: op = poperator.not_( op )
     # print dict(op=op, key=key, val=val, Not=Not, item=item, attr=attr)
@@ -17,5 +17,5 @@ def Filter( items, op=None, key=None, val=None, Not=False, item=None, attr=None 
 
 
 def FilterNone( items ):
-    from . import poperator
+    from .. import poperator
     return list( filter( poperator.isNone( False ), list( items ) ) )
